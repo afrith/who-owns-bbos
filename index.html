@@ -32,6 +32,10 @@ d3.json("bbos.json", function(err, topos) {
     L.geoJson(portions, { onEachFeature: function(f, l) {
         l.bindPopup(f.properties.label + ": " + f.properties.owner);
     }}).addTo(map);
+    L.geoJson(topojson.feature(topos, topos.objects.uedge),
+    {
+        style: { fill: false, color: "#ff0000", dashArray: "10,7", opacity: 1 }
+    }).addTo(map);
 });
 </script>
 </body>
