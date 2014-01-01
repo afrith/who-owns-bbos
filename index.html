@@ -25,7 +25,9 @@ d3.json("bbos.json", function(err, topos) {
     console.log(err);
     td = topos;
     portions = topojson.feature(topos, topos.objects.portion);
-    L.geoJson(portions).addTo(map);
+    L.geoJson(portions, { onEachFeature: function(f, l) {
+        l.bindPopup(f.properties.label + ": " + f.properties.owner);
+    }}).addTo(map);
 });
 </script>
 </body>
