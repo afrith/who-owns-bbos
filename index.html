@@ -20,10 +20,8 @@ var map = L.map('map', {
     maxZoom: 20
 });
 L.tileLayer(
-    "http://{s}.aerial.openstreetmap.org.za/ngi-aerial/{z}/{x}/{y}.jpg",
-    {
-        attribution: 'Aerial photos from <a href="http://www.ngi.gov.za/">CD:NGI</a>',
-        maxZoom: 20
+    "http://{s}.aerial.openstreetmap.org.za/ngi-aerial/{z}/{x}/{y}.jpg", {
+        attribution: 'Aerial photos from <a href="http://www.ngi.gov.za/">CD:NGI</a>'
     }
 ).addTo(map);
 
