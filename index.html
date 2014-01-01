@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Who owns B'bos?</title>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+</head>
+
+<body>
+<div id="map" style="position:absolute;top:0;bottom:0;left:0;right:0;"></div>
+
+<script type="text/javascript">
+var map = L.map('map').setView([-34.5878, 19.5707], 16);
+L.tileLayer(
+    "http://{s}.aerial.openstreetmap.org.za/ngi-aerial/{z}/{x}/{y}.jpg",
+    {
+        attribution: "Aerial photos &copy; <a href=\"http://www.ngi.gov.za/\">CD:NGI</a>",
+        maxZoom: 20
+    }
+).addTo(map);
+</script>
+</body>
+</html>
