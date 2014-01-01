@@ -13,8 +13,10 @@
 
 <script type="text/javascript">
 var map = L.map('map', {
-    center: L.latLng(-34.5878, 19.5707),
+    center: [-34.5878, 19.5707],
     zoom: 16,
+    maxBounds: [[-34.621, 19.532], [-34.538, 19.605]],
+    minZoom: 12,
     maxZoom: 20
 });
 L.tileLayer(
