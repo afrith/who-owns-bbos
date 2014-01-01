@@ -3,13 +3,14 @@
 <head>
 <title>Who owns B'bos?</title>
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+<link rel="stylesheet" href="map.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 </head>
 
 <body>
-<div id="map" style="position:absolute;top:0;bottom:0;left:0;right:0;"></div>
+<div id="map"></div>
 
 <script type="text/javascript">
 var map = L.map('map', {
@@ -17,11 +18,14 @@ var map = L.map('map', {
     zoom: 16,
     maxBounds: [[-34.621, 19.532], [-34.538, 19.605]],
     minZoom: 12,
-    maxZoom: 20
+    maxZoom: 20,
+    zoomAnimation: false,
+    fadeAnimation: false
 });
 L.tileLayer(
     "http://{s}.aerial.openstreetmap.org.za/ngi-aerial/{z}/{x}/{y}.jpg", {
-        attribution: 'Aerial photos from <a href="http://www.ngi.gov.za/">CD:NGI</a>'
+        attribution: 'Aerial photos from <a href="http://www.ngi.gov.za/">CD:NGI</a>',
+        maxZoom: 20
     }
 ).addTo(map);
 
@@ -44,15 +48,36 @@ d3.json("bbos.json", function(err, topos) {
         .style("top", thetop + "px");
     g.attr("transform", "translate(" + (-left) + "," + (-thetop) + ")");
 
+    var ptns = g.selectAll(".portion")
+        .data(portions.features, function(d) { return d.id; });
+    ptns.enter().append("path")
+        .attr("class", "portion");
+
     var mesh = g.append("path").datum(topojson.mesh(topos, topos.objects.portion))
-        .attr("class", "portion-boundary")
-        .style("stroke-width", 2).style("stroke", "red").style("fill", "none");
+        .attr("class", "portion-boundary");
+
+    var edge = g.append("path").datum(topojson.mesh(topos, topos.objects.uedge))
+        .attr("class", "urban-edge");
+
+    var cfarm = g.append("path").datum(topojson.mesh(topos, topos.objects.farm))
+        .attr("class", "cfarm");
+
+    var cflabel = g.selectAll(".cfarm-label")
+        .data(topojson.feature(topos, topos.objects.farm).features);
+    cflabel.enter().append("text")
+        .attr("class", "cfarm-label")
+        .text(function(f) { return f.properties.label; });
 
     map.on("viewreset", reset);
     reset();
 
     function reset() {
         mesh.attr("d", path);
+        ptns.attr("d", path);
+        edge.attr("d", path);
+        cfarm.attr("d", path);
+        cflabel.attr("x", function(f) { return path.centroid(f)[0]; })
+            .attr("y", function(f) { return path.centroid(f)[1]; });
     }
 
     function projectPoint(x, y) {
