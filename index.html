@@ -4,6 +4,8 @@
 <title>Who owns B'bos?</title>
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
 </head>
 
 <body>
@@ -18,6 +20,13 @@ L.tileLayer(
         maxZoom: 20
     }
 ).addTo(map);
+
+d3.json("bbos.json", function(err, topos) {
+    console.log(err);
+    td = topos;
+    portions = topojson.feature(topos, topos.objects.portion);
+    L.geoJson(portions).addTo(map);
+});
 </script>
 </body>
 </html>
