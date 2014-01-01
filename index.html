@@ -25,17 +25,40 @@ L.tileLayer(
     }
 ).addTo(map);
 
+var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+    g = svg.append("g")
+    .attr("class", "leaflet-zoom-hide");
+
 d3.json("bbos.json", function(err, topos) {
-    portions = topojson.feature(topos, topos.objects.portion);
-    L.geoJson(portions, { onEachFeature: function(f, l) {
-        l.bindPopup(f.properties.label + ": " + f.properties.owner);
-    }}).addTo(map);
-    var ue = L.geoJson(topojson.feature(topos, topos.objects.uedge),
-    {
-        style: { fill: false, color: "#ff0000", dashArray: "10,7", opacity: 1 }
-    });
-    ue.getAttribution = function() { return 'Cadastral boundaries from <a href="http://csg.dla.gov.za/">CSG</a>'; };
-    ue.addTo(map);
+    var portions = topojson.feature(topos, topos.objects.portion);
+
+    var transform = d3.geo.transform({point: projectPoint }),
+        path = d3.geo.path().projection(transform),
+        bounds = path.bounds(portions),
+        left = bounds[0][0],
+        thetop = bounds[0][1];
+
+    svg.attr("width", bounds[1][0] - left)
+        .attr("height", bounds[1][1] - thetop)
+        .style("left", left + "px")
+        .style("top", thetop + "px");
+    g.attr("transform", "translate(" + (-left) + "," + (-thetop) + ")");
+
+    var mesh = g.append("path").datum(topojson.mesh(topos, topos.objects.portion))
+        .attr("class", "portion-boundary")
+        .style("stroke-width", 2).style("stroke", "red").style("fill", "none");
+
+    map.on("viewreset", reset);
+    reset();
+
+    function reset() {
+        mesh.attr("d", path);
+    }
+
+    function projectPoint(x, y) {
+        var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+        this.stream.point(point.x, point.y);
+    }
 });
 </script>
 </body>
