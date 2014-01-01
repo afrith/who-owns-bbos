@@ -22,7 +22,7 @@ var map = L.map('map', {
 L.tileLayer(
     "http://{s}.aerial.openstreetmap.org.za/ngi-aerial/{z}/{x}/{y}.jpg",
     {
-        attribution: "Aerial photos &copy; <a href=\"http://www.ngi.gov.za/\">CD:NGI</a>",
+        attribution: 'Aerial photos from <a href="http://www.ngi.gov.za/">CD:NGI</a>',
         maxZoom: 20
     }
 ).addTo(map);
@@ -32,10 +32,12 @@ d3.json("bbos.json", function(err, topos) {
     L.geoJson(portions, { onEachFeature: function(f, l) {
         l.bindPopup(f.properties.label + ": " + f.properties.owner);
     }}).addTo(map);
-    L.geoJson(topojson.feature(topos, topos.objects.uedge),
+    var ue = L.geoJson(topojson.feature(topos, topos.objects.uedge),
     {
         style: { fill: false, color: "#ff0000", dashArray: "10,7", opacity: 1 }
-    }).addTo(map);
+    });
+    ue.getAttribution = function() { return 'Cadastral boundaries from <a href="http://csg.dla.gov.za/">CSG</a>'; };
+    ue.addTo(map);
 });
 </script>
 </body>
