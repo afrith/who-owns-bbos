@@ -7,6 +7,3 @@ svg path { stroke-linejoin: bevel; stroke-linecap: butt; }
 .portion:hover { fill: white; fill-opacity: 0.5; }
 
 .urban-edge { fill: none; stroke: darkblue; stroke-width: 5; stroke-dasharray: 10,7; }
-
-.cfarm { fill: none; stroke: darkgrey; stroke-width: 5; }
-.cfarm-label { fill: darkgrey; text-anchor: middle; font-size: 16pt; font-weight: bold; }

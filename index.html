@@ -59,15 +59,6 @@ d3.json("bbos.json", function(err, topos) {
     var edge = g.append("path").datum(topojson.mesh(topos, topos.objects.uedge))
         .attr("class", "urban-edge");
 
-    var cfarm = g.append("path").datum(topojson.mesh(topos, topos.objects.farm))
-        .attr("class", "cfarm");
-
-    var cflabel = g.selectAll(".cfarm-label")
-        .data(topojson.feature(topos, topos.objects.farm).features);
-    cflabel.enter().append("text")
-        .attr("class", "cfarm-label")
-        .text(function(f) { return f.properties.label; });
-
     map.on("viewreset", reset);
     reset();
 
@@ -75,9 +66,6 @@ d3.json("bbos.json", function(err, topos) {
         mesh.attr("d", path);
         ptns.attr("d", path);
         edge.attr("d", path);
-        cfarm.attr("d", path);
-        cflabel.attr("x", function(f) { return path.centroid(f)[0]; })
-            .attr("y", function(f) { return path.centroid(f)[1]; });
     }
 
     function projectPoint(x, y) {
