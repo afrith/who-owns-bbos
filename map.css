@@ -1,4 +1,5 @@
 #map { position:absolute; top:0; bottom:0; left:0; right:0; }
+#label { width: 200px; height: 100px; position: absolute; right:20px; top: 20px; background-color: white; }
 
 svg path { stroke-linejoin: bevel; stroke-linecap: butt; }
 

@@ -11,6 +11,7 @@
 
 <body>
 <div id="map"></div>
+<div id="label" style="display: none;">Foo</div>
 
 <script type="text/javascript">
 var map = L.map('map', {
@@ -51,7 +52,15 @@ d3.json("bbos.json", function(err, topos) {
     var ptns = g.selectAll(".portion")
         .data(portions.features, function(d) { return d.id; });
     ptns.enter().append("path")
-        .attr("class", "portion");
+        .attr("class", "portion")
+        .on("mousemove", function(d) {
+            d3.select("div#label")
+                .html(d.properties.owner + (d.properties.address ? ("<br>" + d.properties.address) : ""))
+                .style("display", "block");
+        })
+        .on("mouseout", function() {
+            d3.select("div#label").style("display", "none");
+        });
 
     var mesh = g.append("path").datum(topojson.mesh(topos, topos.objects.portion))
         .attr("class", "portion-boundary");
