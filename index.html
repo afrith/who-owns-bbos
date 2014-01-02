@@ -55,7 +55,7 @@ d3.json("bbos.json", function(err, topos) {
         .attr("class", "portion")
         .on("mousemove", function(d) {
             d3.select("div#label")
-                .html(d.properties.owner + (d.properties.address ? ("<br>" + d.properties.address) : ""))
+                .html(d.properties.label + "<br>" + d.properties.owner + (d.properties.address ? ("<br>" + d.properties.address) : ""))
                 .style("display", "block");
         })
         .on("mouseout", function() {
